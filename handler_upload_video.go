@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"mime"
 	"net/http"
@@ -121,9 +122,8 @@ func (cfg *apiConfig) handlerUploadVideo(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	url := cfg.getObjectURL(key)
+	url := fmt.Sprintf("%v/%v", cfg.s3CfDistribution, key)
 	videoMD.VideoURL = &url
-
 	err = cfg.db.UpdateVideo(videoMD)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "nope", err)
